@@ -1,0 +1,117 @@
+
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Трассировка — ДИТ.Калькулятор MVP</title>
+<style>
+ body{font-family:system-ui,Arial,sans-serif;margin:0;background:#f4f6f8;color:#222}
+ nav{background:#0b3d91;color:#fff;padding:10px 18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+ nav a{color:#cfe0ff;text-decoration:none;font-size:13px} nav a:hover{color:#fff}
+ .userbox{margin-left:auto;font-size:13px}
+ main{max-width:1250px;margin:20px auto;padding:0 16px}
+ h1{font-size:22px} table{border-collapse:collapse;width:100%;background:#fff;font-size:13px}
+ th,td{border:1px solid #d7dde5;padding:6px 8px;text-align:left;vertical-align:top}
+ th{background:#eef2f7}
+ .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;background:#dfe8f3}
+ .st-Завершено,.st-Завершён,.st-Согласовано,.st-Подписано,.st-Согласована,.st-Закрыто,.st-Завершена{background:#d9f2df}
+ .st-В-работе,.st-Работа,.st-На-согласовании,.st-На-подписании,.st-Планируется{background:#fff3cd}
+ .st-Отменена,.st-Отменён,.st-Отклонено,.st-Отклонен,.st-Корзина,.st-Архив{background:#fbdcdc}
+ form.inline{display:inline} input,select{padding:5px;border:1px solid #bcc7d4;border-radius:4px;font-size:13px}
+ .card{background:#fff;border:1px solid #d7dde5;border-radius:8px;padding:14px;margin:12px 0}
+ .dup{background:#ffe2b8}.err{color:#b00020;font-size:13px}.ok{color:#1a7f37;font-size:13px}
+ .fr{color:#0b3d91;font-size:11px} pre{white-space:pre-wrap;font-size:12px;background:#f0f3f7;padding:10px;border-radius:6px}
+ td[contenteditable]{background:#fbfdff}
+</style></head><body>
+
+<nav><b>ДИТ.Калькулятор · MVP</b>
+ <a href="index.html">Главная</a><a href="purchases.html">Закупки</a><a href="gks.html">ГК</a>
+ <a href="systems.html">Системы</a><a href="subsystems.html">Подсистемы</a><a href="nsi_types.html">Тип работ</a>
+ <a href="roadmap.html">Дорожная карта</a><a href="budgets.html">Бюджеты</a>
+ <a href="works.html">Работы</a><a href="calcs.html">Расчёты</a><a href="docs.html">ОД</a>
+ <a href="szs.html">СЗ</a><a href="internal.html">Внутр. работы</a><a href="sync.html">Журнал синхр.</a>
+ <a href="kb.html">База знаний</a><a href="traceability.html">Трассировка</a>
+ <span class="userbox">Роль:
+  <form class="inline" method="post" action="/role">
+   <select name="role" onchange="this.form.submit()">
+    <option >Администратор</option><option >Администратор НСИ</option><option >РП ДИТ</option><option >Аналитик Подрядчика</option><option >Аналитик ДИТ</option><option >Аналитик качества</option><option >Заказчик</option>
+   </select></form></span>
+</nav><main>
+
+
+
+     <h1>Матрица трассировки требований MVP <span class="fr">источники: docs/requirements/03, 04, 09, 13, 14</span></h1>
+     <p>Всего требований в реестре MVP: <b>64</b> (FR — функциональные; BR — бизнес-правила;
+     конфликты источников C-1…C-10 описаны в файле 07).</p>
+     <table><tr><th>ID требования</th><th>Формулировка</th><th>Реализация в MVP</th><th>Связанные BR / примечания</th></tr>
+     <tr><td><b>FR-NSI-01</b></td><td>Реестр «Закупки»: поля, обязательность, уникальность пары, автосоздание ГК «Черновик», сортировка по статусу</td>
+      <td><code>/purchases, POST /purchases, edit/trash API</code></td><td>BR-SM-01, BR-VAL-01, BR-VAL-02</td></tr><tr><td><b>FR-NSI-02</b></td><td>Статусные модели объектов НСИ</td>
+      <td><code>data.STATUS_MODELS + recalc_purchase_status + переходы ГК</code></td><td>BR-SM-01..04</td></tr><tr><td><b>FR-NSI-03</b></td><td>Логики заведения ГК v2: автозаполнение из СПУ, чек-бокс «Рефакторинг», блокировка переходов</td>
+      <td><code>/gks, /gks/&lt;id&gt;, POST transition</code></td><td>BR-VAL-03</td></tr><tr><td><b>FR-NSI-04</b></td><td>Переход к карточке ГК по клику с сохранением истории</td>
+      <td><code>ссылки «ГК-…» во всех таблицах (works/calcs/docs/gks)</code></td><td></td></tr><tr><td><b>FR-NSI-05</b></td><td>Реестр «Системы»: импорт из ДИТ.НСИ (РИРС), журнал синхронизации</td>
+      <td><code>/systems?import_rirs=…, блок журнала</code></td><td>BR-VAL-01 (РИРС только цифры)</td></tr><tr><td><b>FR-NSI-06</b></td><td>Объединённый реестр «Системы и Проекты»</td>
+      <td><code>/systems (единый реестр, мок)</code></td><td></td></tr><tr><td><b>FR-NSI-07</b></td><td>Реестр «Проекты» (не ИС)</td>
+      <td><code>/systems (тип сущности — мок)</code></td><td></td></tr><tr><td><b>FR-NSI-08</b></td><td>Справочник «Тип работ» с уникальным кодом</td>
+      <td><code>nsi_types.html (POST, проверка уникальности)</code></td><td>BR-VAL-01</td></tr><tr><td><b>FR-NSI-09</b></td><td>Изменение реестра подсистем</td>
+      <td><code>/subsystems</code></td><td></td></tr><tr><td><b>FR-NSI-10</b></td><td>Разделение полей ФТ: развитие / рефакторинг</td>
+      <td><code>ft_dev/ft_refactor в системах и подсистемах</code></td><td></td></tr><tr><td><b>FR-NSI-11</b></td><td>Фильтрация ФОИ по low-code и типу методики</td>
+      <td><code>/calcs/&lt;id&gt;: флаг lowcode у системы + фильтр</code></td><td></td></tr><tr><td><b>FR-NSI-12</b></td><td>Вкладка «Дорожная карта» в карточке «Система»</td>
+      <td><code>/roadmap?system_id=</code></td><td></td></tr><tr><td><b>FR-NSI-13</b></td><td>Вкладка «Бюджеты и закупки» в карточке Системы</td>
+      <td><code>/budgets</code></td><td></td></tr><tr><td><b>FR-WORK-01</b></td><td>Вкладка «Задачи заявки» (US)</td>
+      <td><code>/works/&lt;id&gt;</code></td><td></td></tr><tr><td><b>FR-WORK-02</b></td><td>Проверка US на дублирование по всем работам</td>
+      <td><code>dup_map в work_detail (подсветка .dup)</code></td><td>04 §4.5</td></tr><tr><td><b>FR-WORK-03</b></td><td>Запрет дублей наименований работ в рамках этапа</td>
+      <td><code>POST /works (отклонение)</code></td><td>04 §4.5</td></tr><tr><td><b>FR-WORK-04</b></td><td>Периоды работ ≤ срока этапа ГК</td>
+      <td><code>POST /works (валидация дат этапа)</code></td><td>04 §4.12</td></tr><tr><td><b>FR-WORK-05</b></td><td>Кликабельные названия US</td>
+      <td><code>ссылки US в tables/work_detail.html</code></td><td></td></tr><tr><td><b>FR-WORK-06</b></td><td>Модернизация переходов между ЭФ</td>
+      <td><code>сквозные ссылки ГК↔работа↔расчёт↔ОД</code></td><td></td></tr><tr><td><b>FR-WORK-07</b></td><td>Корректировка интерфейса расчёта для РП</td>
+      <td><code>/calcs/&lt;id&gt; (блок замечаний РП)</code></td><td></td></tr><tr><td><b>FR-WORK-08</b></td><td>Блок «Размер команды»</td>
+      <td><code>team_size в карточке работы</code></td><td></td></tr><tr><td><b>FR-CALC-01</b></td><td>Формирование РСЗ по заявке v2</td>
+      <td><code>/calcs, /calcs/&lt;id&gt;</code></td><td></td></tr><tr><td><b>FR-CALC-02</b></td><td>Импорт ФОИ из Excel</td>
+      <td><code>мок-кнопка в calc_detail (без файла)</code></td><td>НФТ форматы (06)</td></tr><tr><td><b>FR-CALC-03</b></td><td>In-line работа с таблицей ФОИ («как в Excel»)</td>
+      <td><code>contenteditable cells в calc_detail</code></td><td></td></tr><tr><td><b>FR-CALC-04</b></td><td>Предзаполнение вкладки «Бизнес-постановки» в РСЗ</td>
+      <td><code>bp_list/bp_auto документов</code></td><td></td></tr><tr><td><b>FR-CALC-05</b></td><td>Замена ФОИ/ФТ из НМЦК</td>
+      <td><code>from_nmck + кнопка замены (мок)</code></td><td>04 §4.10</td></tr><tr><td><b>FR-CALC-06</b></td><td>Обновление данных в ОД при повторном копировании ФОИ из НМЦК</td>
+      <td><code>doc_print: bp_auto из работ</code></td><td></td></tr><tr><td><b>FR-CALC-07</b></td><td>Проверка описания ФОИ ≥ 300 символов</td>
+      <td><code>check_300_passed + бэйдж в таблице ФОИ</code></td><td>BR-VAL-05</td></tr><tr><td><b>FR-CALC-08</b></td><td>Статусы ФОИ с фиксированной стоимостью</td>
+      <td><code>fixed_price + STATUS_MODELS[&#39;ФОИ&#39;]</code></td><td>04 §4.3.5</td></tr><tr><td><b>FR-CALC-09</b></td><td>Перепривязка ФОИ к итерации; откат не создаёт итерацию</td>
+      <td><code>POST /foci/&lt;id&gt;/status (итерация неизменна)</code></td><td>⚠ C-1</td></tr><tr><td><b>FR-CALC-10</b></td><td>Изменение статуса ФОИ, пока РСЗ «Согласовано РП»</td>
+      <td><code>POST /foci/&lt;id&gt;/status (окно правки)</code></td><td>⚠ C-1</td></tr><tr><td><b>FR-CALC-11</b></td><td>Конструктор РСЗ</td>
+      <td><code>упрощённая сборка в /calcs (мок)</code></td><td>04 §4.3.1</td></tr><tr><td><b>FR-CALC-12</b></td><td>Справочник замечаний к РСЗ</td>
+      <td><code>comments.catalog_ref</code></td><td></td></tr><tr><td><b>FR-CALC-13</b></td><td>Выгрузка замечаний к РСЗ</td>
+      <td><code>GET /calcs/&lt;id&gt;/comments.csv</code></td><td></td></tr><tr><td><b>FR-CALC-14</b></td><td>Проверка заполненности НСИ для РСЗ</td>
+      <td><code>GET /api/nsi-check</code></td><td>04 §4.4 МТ1–МТ8</td></tr><tr><td><b>FR-DOC-01</b></td><td>Единый вид незаполненных данных в ПФ ОД — «undefined»</td>
+      <td><code>doc_print.html (.undef)</code></td><td>04 §4.9</td></tr><tr><td><b>FR-DOC-02</b></td><td>Нумерация разделов во всех документах</td>
+      <td><code>нумерованные разделы в doc_print</code></td><td></td></tr><tr><td><b>FR-DOC-03</b></td><td>Децимальный номер: 8 полей через точку, ФЛК</td>
+      <td><code>validate_dec_number() при создании ОД</code></td><td>04 §4.6</td></tr><tr><td><b>FR-DOC-04</b></td><td>Правки в шаблон ПЗ</td>
+      <td><code>структура ПЗ в doc_print</code></td><td></td></tr><tr><td><b>FR-DOC-05</b></td><td>Исключение пункта ТЗ из текстов ПОЗ</td>
+      <td><code>примечание шаблона в doc_print</code></td><td></td></tr><tr><td><b>FR-DOC-06</b></td><td>Автоподтягивание БП в ПЗ и ЧТЗ</td>
+      <td><code>bp_auto при POST /docs/new</code></td><td></td></tr><tr><td><b>FR-DOC-07</b></td><td>Комплектная выгрузка ЧТЗ (ЧТЗ+БП)</td>
+      <td><code>ссылка «выгрузить комплект» (мок CSV)</code></td><td></td></tr><tr><td><b>FR-DOC-08</b></td><td>Трудозатраты по US в ПОЗ</td>
+      <td><code>us_costs (чел.-мес × 160 ч)</code></td><td>04 §4.8</td></tr><tr><td><b>FR-DOC-09</b></td><td>Ставка НДС 20%/22%</td>
+      <td><code>nds_rate по типу шаблона</code></td><td>⚠ C-5</td></tr><tr><td><b>FR-DOC-10</b></td><td>Реестр целевых показателей в ЧТЗ</td>
+      <td><code>секция ЦП в doc_print ЧТЗ</code></td><td></td></tr><tr><td><b>FR-DOC-11</b></td><td>Согласующие при смене организации заказчика</td>
+      <td><code>customer_org ГК + реквизиты ОД</code></td><td></td></tr><tr><td><b>FR-DOC-12</b></td><td>Раздел «Документы»</td>
+      <td><code>/docs</code></td><td></td></tr><tr><td><b>FR-DOC-13</b></td><td>Интеграция с СПУР</td>
+      <td><code>мок журнала (идемпотентность описана в 04 §4.11)</code></td><td>04 §4.11</td></tr><tr><td><b>FR-SZ-01</b></td><td>Карточка служебного задания</td>
+      <td><code>/szs</code></td><td></td></tr><tr><td><b>FR-SZ-02</b></td><td>Статусные модели СЗ / Этапа СЗ / Внутренней работы</td>
+      <td><code>STATUS_MODELS</code></td><td>04 §4.2</td></tr><tr><td><b>FR-SZ-03</b></td><td>Реестр «Внутренние работы»</td>
+      <td><code>/internal</code></td><td></td></tr><tr><td><b>FR-SZ-04</b></td><td>Календарный план СЗ</td>
+      <td><code>/calendar (строки этапов СЗ)</code></td><td>BR-SM-05</td></tr><tr><td><b>FR-AN-01</b></td><td>Обзор текущих показателей</td>
+      <td><code>/dashboard</code></td><td></td></tr><tr><td><b>FR-AN-02</b></td><td>Календарные планы ГК и СЗ с прогрессом готовности</td>
+      <td><code>/calendar (.bar)</code></td><td>BR-SM-05</td></tr><tr><td><b>FR-AN-03</b></td><td>Дашборд «Бюджеты и закупки»</td>
+      <td><code>/budgets</code></td><td></td></tr><tr><td><b>FR-AN-04</b></td><td>Диаграммы распределения сотрудников по проектам</td>
+      <td><code>/dashboard (CSS bar)</code></td><td>⚠ C-7</td></tr><tr><td><b>FR-KB-01</b></td><td>Модуль «База знаний» (MVP1)</td>
+      <td><code>/kb</code></td><td>⚠ C-9</td></tr><tr><td><b>FR-KB-02</b></td><td>База Знаний Калькулятора (вторая БП)</td>
+      <td><code>/kb (консолидировано)</code></td><td>⚠ C-9</td></tr><tr><td><b>FR-KB-03</b></td><td>Раздел «Помощь»</td>
+      <td><code>/help</code></td><td></td></tr><tr><td><b>FR-UX-01</b></td><td>Адаптивный интерфейс под масштаб экрана</td>
+      <td><code>viewport + @media в style.css</code></td><td></td></tr><tr><td><b>FR-UX-02</b></td><td>Выравнивание реестров</td>
+      <td><code>единая сетка таблиц</code></td><td></td></tr><tr><td><b>FR-UX-03</b></td><td>Подсказки в индикаторах</td>
+      <td><code>title= у KPI на дашборде</code></td><td></td></tr><tr><td><b>FR-UX-04</b></td><td>Пагинация стандартным блоком</td>
+      <td><code>мок-метка «показано N из M»</code></td><td></td></tr><tr><td><b>FR-MISC-01</b></td><td>Виджет новостей Telegram</td>
+      <td><code>/news</code></td><td>⚠ C-4</td></tr></table>
+     <div class="card"><h3>Открытые конфликты источников (файл 07) и их отражение в MVP</h3>
+      <ul><li><b>C-1</b> окно смены статусов ФОИ — помечено маркером в таблице ФОИ (/calcs/&lt;id&gt;);</li>
+      <li><b>C-5/C-7</b> НДС 20%/22% (ФЗ-425) — ставка хранится per-объект, показывается как есть;</li>
+      <li><b>C-?</b> «undefined» в печатных формах — поведение сохранено (/docs/&lt;id&gt;/print);</li>
+      <li><b>C-9</b> два набора правил Базы знаний — оба отражены в /kb;</li>
+      <li>Права на изменение ГК (конфликт прав Администратора) — реализовано по матрице файла 02.</li></ul>
+      <p class="fr">Маршруты MVP: /, /purchases, /gks, /systems, /subsystems, nsi_types.html, /roadmap, /budgets, /works, /calcs, /docs, /szs, /internal, /sync, /kb, /traceability</p></div>
+    </main></body></html>

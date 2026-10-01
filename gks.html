@@ -1,0 +1,61 @@
+
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ГК — ДИТ.Калькулятор MVP</title>
+<style>
+ body{font-family:system-ui,Arial,sans-serif;margin:0;background:#f4f6f8;color:#222}
+ nav{background:#0b3d91;color:#fff;padding:10px 18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+ nav a{color:#cfe0ff;text-decoration:none;font-size:13px} nav a:hover{color:#fff}
+ .userbox{margin-left:auto;font-size:13px}
+ main{max-width:1250px;margin:20px auto;padding:0 16px}
+ h1{font-size:22px} table{border-collapse:collapse;width:100%;background:#fff;font-size:13px}
+ th,td{border:1px solid #d7dde5;padding:6px 8px;text-align:left;vertical-align:top}
+ th{background:#eef2f7}
+ .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;background:#dfe8f3}
+ .st-Завершено,.st-Завершён,.st-Согласовано,.st-Подписано,.st-Согласована,.st-Закрыто,.st-Завершена{background:#d9f2df}
+ .st-В-работе,.st-Работа,.st-На-согласовании,.st-На-подписании,.st-Планируется{background:#fff3cd}
+ .st-Отменена,.st-Отменён,.st-Отклонено,.st-Отклонен,.st-Корзина,.st-Архив{background:#fbdcdc}
+ form.inline{display:inline} input,select{padding:5px;border:1px solid #bcc7d4;border-radius:4px;font-size:13px}
+ .card{background:#fff;border:1px solid #d7dde5;border-radius:8px;padding:14px;margin:12px 0}
+ .dup{background:#ffe2b8}.err{color:#b00020;font-size:13px}.ok{color:#1a7f37;font-size:13px}
+ .fr{color:#0b3d91;font-size:11px} pre{white-space:pre-wrap;font-size:12px;background:#f0f3f7;padding:10px;border-radius:6px}
+ td[contenteditable]{background:#fbfdff}
+</style></head><body>
+
+<nav><b>ДИТ.Калькулятор · MVP</b>
+ <a href="index.html">Главная</a><a href="purchases.html">Закупки</a><a href="gks.html">ГК</a>
+ <a href="systems.html">Системы</a><a href="subsystems.html">Подсистемы</a><a href="nsi_types.html">Тип работ</a>
+ <a href="roadmap.html">Дорожная карта</a><a href="budgets.html">Бюджеты</a>
+ <a href="works.html">Работы</a><a href="calcs.html">Расчёты</a><a href="docs.html">ОД</a>
+ <a href="szs.html">СЗ</a><a href="internal.html">Внутр. работы</a><a href="sync.html">Журнал синхр.</a>
+ <a href="kb.html">База знаний</a><a href="traceability.html">Трассировка</a>
+ <span class="userbox">Роль:
+  <form class="inline" method="post" action="/role">
+   <select name="role" onchange="this.form.submit()">
+    <option >Администратор</option><option >Администратор НСИ</option><option >РП ДИТ</option><option >Аналитик Подрядчика</option><option >Аналитик ДИТ</option><option >Аналитик качества</option><option >Заказчик</option>
+   </select></form></span>
+</nav><main>
+
+
+
+     <h1>Реестр «Государственные контракты» <span class="fr">FR-NSI-03/04</span></h1>
+     <table><tr><th>Номер</th><th>Дата регистрации</th><th>Цена, ₽</th><th>Коэфф. пересчёта</th><th>Автозаполнение из СПУ</th><th>Блок рефакторинга</th><th>Статус</th></tr>
+     <tr style="">
+      <td><a href="/gks/1">ГК-2026-001</a></td><td>2026-01-15</td>
+      <td>12,500,000</td>
+      <td>0.85 </td>
+      <td>✔</td><td>✔</td>
+      <td><span class="badge st-Работа">Работа</span></td></tr><tr style="">
+      <td><a href="/gks/2">ГК-2026-002</a></td><td>2026-02-03</td>
+      <td>8,300,000</td>
+      <td>1.0 </td>
+      <td>✔</td><td>—</td>
+      <td><span class="badge st-Согласование-РП">Согласование РП</span></td></tr><tr style="">
+      <td><a href="/gks/3">ГК-2026-003</a></td><td>—</td>
+      <td>0</td>
+      <td>0 <span class="err">(нарушение 0&lt;k≤1!)</span></td>
+      <td>—</td><td>✔</td>
+      <td><span class="badge st-Черновик">Черновик</span></td></tr></table>
+     <p class="fr">BR-SM-02: переход «Черновик→Согласование РП» блокируется при незаполненных обязательных полях;
+     коэффициент пересчёта: 0 &lt; k ≤ 1 (файл 04).</p>
+    </main></body></html>
